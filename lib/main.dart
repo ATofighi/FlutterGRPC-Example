@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _value = 0;
   int? _minimum = 0;
   int? _maximum = 10000;
+  late ClientChannel channel;
   late RandomExchangerServiceClient stub;
   TextEditingController _minimumFieldController = TextEditingController();
   TextEditingController _maximumFieldController = TextEditingController();
@@ -125,11 +126,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    final channel = ClientChannel('192.168.43.8',
+    channel = ClientChannel('192.168.43.8',
         port: 50051,
         options:
             const ChannelOptions(credentials: ChannelCredentials.insecure()));
     stub = RandomExchangerServiceClient(channel);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    channel.terminate();
   }
 
   @override
@@ -196,11 +203,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   OutlinedButton(
                       onPressed: _getMultiConditionRandom,
                       child: Text("Get MultiConditional Random")),
-                if (_responseStream == null  && _streamValues == false)
+                if (_responseStream == null && _streamValues == false)
                   OutlinedButton(
                       onPressed: _getRandomsForEver,
                       child: Text("Get Multiple Randoms")),
-                if (_responseStream == null  && _streamValues == false)
+                if (_responseStream == null && _streamValues == false)
                   OutlinedButton(
                       onPressed: _getBidiRandom,
                       child: Text("Get Bidi Randoms")),
