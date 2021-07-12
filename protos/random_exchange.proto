@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package random_exchange;
+
+service RandomExchangerService {
+    rpc GetSingleRandom (RandomRequest) returns (RandomResponse);
+    rpc GetRandomForEver (RandomRequest) returns (stream RandomResponse);
+    rpc GetSingleRandomWithMultipleConditions (stream RandomRequest) returns (RandomResponse);
+    rpc GetBidiRandom(stream RandomRequest) returns (stream RandomResponse);
+}
+
+message RandomRequest {
+    int32 minimum = 1;
+    int32 maximum = 2;
+}
+
+message RandomResponse {
+    int32 value = 1;
+}
